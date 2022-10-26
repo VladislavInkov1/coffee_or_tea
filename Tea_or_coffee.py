@@ -1,13 +1,13 @@
 import csv
 
-#Функция получения данных из базы и преобразования их в список
+# Get data from the database and convert it to a list
 def processing_cvs(DataBaseName):
     with open(DataBaseName, newline='') as csvfile:
         dataBase = list(csv.DictReader(csvfile, delimiter=','))
     return dataBase
 
 
-#Функция удаления данных из базы
+# Delete data from the database
 def deleting_el(strList, dataBase):
     for row in dataBase:
         for key in strList:
@@ -15,14 +15,14 @@ def deleting_el(strList, dataBase):
     return dataBase
 
 
-#Функция преобразования строчных данных в числовые
+# Convert string data to numbers
 def type_conversion_dataBase(strDict, row):
     for key in strDict:
         row[key] = strDict[key](row[key])
     return row
 
 
-#Функция нормализации одномерных показателей
+# Normalize one-dimensional indicators
 def linear_normalization(dataBase, params, person):
     for param in params:
         maxValue = max(dataBase, key=lambda x:x[param])[param]
@@ -33,7 +33,7 @@ def linear_normalization(dataBase, params, person):
     return dataBase, person
 
 
-#Функция вычисления связей между отдельными n-мерными показателями
+# Calculate the relationships between individual n-dimensional indicators
 def volume_normalization (dataBase, person, params):
     volumeDataBase = {}
     for param in params:
@@ -46,7 +46,8 @@ def volume_normalization (dataBase, person, params):
     return volumeDataBase
 
 
-#Функция преобразования текстового значения округов в числовые списки, где первый элемент - координата по x, второй элемент - координата по y
+# Convert text values of counties into numeric lists,
+# where the first element is the x coordinate, the second element is the y coordinate
 def district(row):
     if row['Округ']=='СВАО':
         row['Округ']=[2**(1/2)/4, 2**(1/2)/4, 0]
@@ -71,7 +72,8 @@ def district(row):
     return row
 
 
-#Функция преобразования цветов в числовой ряд, основываясь на принципе разложения белового света на спектр (черный - последний цвет)
+#Convert colors into a numerical series based on the principle
+# of decomposition of white light into a spectrum (black is the last color)
 def color(row):
     if row['Любимый цвет']=='Черный':
         row['Любимый цвет']=0
@@ -94,7 +96,7 @@ def color(row):
     return row
 
 
-#Функция преобразования значения знаков зодиака в числовой список
+# Convert zodiac sign values to a numeric list
 def zodiac_sign(row):
     if row['Знак зодиака']=='Овен':
          row['Знак зодиака']=[0.5, 0]
@@ -123,7 +125,7 @@ def zodiac_sign(row):
     return row
 
 
-#Функция получения данных от пользователя
+# Get data from the user
 def get_person(dataBase):
     keys = list(clearDataBase[0].keys())
     del keys[-1]
@@ -133,7 +135,7 @@ def get_person(dataBase):
     return personData
 
 
-#Функция подсчета длины связей
+# Calculate the lengths of the links
 def counting_links(dataBase, person, volumeDataBase, strList, volumeList):
     countingLinks = {}
     for item, row in enumerate(dataBase):
@@ -146,7 +148,7 @@ def counting_links(dataBase, person, volumeDataBase, strList, volumeList):
     return countingLinks
 
 
-#Функция подсчета результата
+# Calculate the result
 def choose_coffee_or_tea(array):
     coffee = array.count('К')
     tea = array.count('Ч')
