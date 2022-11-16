@@ -1,5 +1,9 @@
 import csv
 
+
+preferences = []
+
+
 # Get data from the database and convert it to a list
 def processing_cvs(DataBaseName):
     with open(DataBaseName, newline='') as csvfile:
@@ -156,8 +160,6 @@ def choose_coffee_or_tea(array):
 
 
 dataBase = processing_cvs('Gruppy_22__1_-_01.csv')
-
-
 clearDataBase = deleting_el(['28.сен', 'ФИО', '№'], dataBase)
 
 
@@ -176,21 +178,12 @@ person = zodiac_sign(person)
 
 
 normalizeDataBase, person = linear_normalization(clearDataBase, ['Продолжительность сна', 'Время подъема', 'Любимый цвет'], person)
-
-
 volumeDataBase = volume_normalization(normalizeDataBase, person, ['Знак зодиака', 'Округ'])
-
-
 countingLinksBase = counting_links(normalizeDataBase, person, volumeDataBase, ['Продолжительность сна', 'Время подъема', 'Любимый цвет'], ['Знак зодиака', 'Округ'])
-
-
 sortedCountingLinksBase = dict(sorted(countingLinksBase.items(), key = lambda item: item[1]))
-
-
 nearestIDs = list(sortedCountingLinksBase.keys())[0:5]
 
 
-preferences = []
 for idd in nearestIDs:
     preferences.append(clearDataBase[idd]['К/Ч'])
 
